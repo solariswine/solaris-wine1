@@ -3,170 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Solaris Wine | Premium Portuguese Wines</title>
-
+  <title>Solaris Wine</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="preload" as="image" href="images/hero-wine.webp" />
 </head>
-
 <body>
 
-  <header class="hero" id="home">
-    <div class="hero-bg"></div>
+<header class="header">
+  <div class="logo">SOLARIS WINE</div>
+  <button class="cart-btn" onclick="openCart()">Cart <span id="cartCount">0</span></button>
+</header>
 
-    <div class="hero-card">
-      <p class="eyebrow">Premium Portuguese Wines</p>
-      <h1>Solaris<br>Wine</h1>
+<section class="hero">
+  <div>
+    <p class="eyebrow">Premium Portuguese Wine</p>
+    <h1>Elegant Wines for Fine Dining</h1>
+    <p class="hero-text">Imported by Solaris Intertrade Co., Ltd.</p>
+    <a href="#products" class="primary-btn">View Collection</a>
+  </div>
+</section>
 
-      <p class="hero-text">
-        Selected wines for restaurants, hotels, wine bars and private clients.
-      </p>
+<section id="products" class="products">
+  <h2>Our Wine Collection</h2>
 
-      <div class="hero-actions">
-        <a href="#collection" class="btn primary">View Collection</a>
-        <a href="https://wa.me/66961644422" class="btn outline" target="_blank">
-          Order via WhatsApp
-        </a>
-      </div>
+  <div class="grid">
+
+    <div class="card">
+      <img src="images/mariana-red.png" alt="Mariana Red">
+      <h3>Mariana Red</h3>
+      <p>Portugal · 2024</p>
+      <strong>890 THB</strong>
+      <button onclick="addToCart('Mariana Red', 890)">Add to Cart</button>
     </div>
-  </header>
 
-  <main>
+    <div class="card">
+      <img src="images/mariana-white.png" alt="Mariana White">
+      <h3>Mariana White</h3>
+      <p>Portugal · 2024</p>
+      <strong>750 THB</strong>
+      <button onclick="addToCart('Mariana White', 750)">Add to Cart</button>
+    </div>
 
-    <section class="intro section">
-      <p class="eyebrow">Solaris Wine</p>
-      <h2>Selected Portuguese Wines for Thailand & Laos</h2>
-      <p>
-        A refined portfolio from Portugal, curated for hospitality, wine bars,
-        restaurants and private events.
-      </p>
+    <div class="card">
+      <img src="images/mariana-rose.png" alt="Mariana Rose">
+      <h3>Mariana Rosé</h3>
+      <p>Portugal · 2024</p>
+      <strong>750 THB</strong>
+      <button onclick="addToCart('Mariana Rosé', 750)">Add to Cart</button>
+    </div>
 
-      <div class="trust-grid">
-        <div class="trust-card">
-          <strong>Portugal</strong>
-          <span>Imported directly from Portuguese producers</span>
-        </div>
+    <div class="card">
+      <img src="images/goivo.png" alt="Goivo Vinho Verde">
+      <h3>Goivo Vinho Verde</h3>
+      <p>Portugal · 2024</p>
+      <strong>690 THB</strong>
+      <button onclick="addToCart('Goivo Vinho Verde', 690)">Add to Cart</button>
+    </div>
 
-        <div class="trust-card">
-          <strong>Hospitality</strong>
-          <span>Suitable for restaurants, hotels and wine bars</span>
-        </div>
+  </div>
+</section>
 
-        <div class="trust-card">
-          <strong>Thailand & Laos</strong>
-          <span>Focused supply for premium regional markets</span>
-        </div>
-      </div>
-    </section>
+<div id="cartDrawer" class="cart-drawer">
+  <div class="cart-box">
+    <button class="close" onclick="closeCart()">×</button>
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <div class="cart-total">Total: <span id="cartTotal">0</span> THB</div>
+    <button class="checkout-btn" onclick="goCheckout()">Checkout</button>
+  </div>
+</div>
 
-    <section class="section collection" id="collection">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Our Collection</p>
-          <h2>Wine Portfolio</h2>
-        </div>
-
-        <div class="slider-buttons">
-          <button class="nav-btn" onclick="scrollWines(-1)">‹</button>
-          <button class="nav-btn" onclick="scrollWines(1)">›</button>
-        </div>
-      </div>
-
-      <div class="wine-slider" id="wineSlider"></div>
-    </section>
-
-    <section class="section cart-section" id="cart">
-      <p class="eyebrow">Order Summary</p>
-      <h2>Your Wine Request</h2>
-
-      <div class="cart-box">
-        <div id="cartItems" class="cart-items">No items yet.</div>
-
-        <div class="cart-total">
-          Total: <span id="cartTotal">0</span> THB
-        </div>
-
-        <div class="payment-box">
-          <h3>Payment & Confirmation</h3>
-
-          <div class="payment-option">
-            <span>▦</span>
-            <div>
-              <strong>PromptPay</strong>
-              <small>QR payment will be confirmed via WhatsApp.</small>
-            </div>
-          </div>
-
-          <div class="payment-option">
-            <span>🏦</span>
-            <div>
-              <strong>Bank Transfer</strong>
-              <small>Bank details will be sent after stock confirmation.</small>
-            </div>
-          </div>
-
-          <p class="payment-note">
-            We will confirm stock, delivery fee and payment details before final payment.
-          </p>
-        </div>
-
-        <button class="btn primary full" onclick="sendOrderWhatsApp()">
-          Send Order via WhatsApp
-        </button>
-      </div>
-    </section>
-
-    <section class="section contact" id="contact">
-      <p class="eyebrow">Contact Solaris Wine</p>
-      <h2>Private Orders & Restaurant Supply</h2>
-      <p>
-        For wine orders, restaurant supply, hotel service, wine bars and private events.
-      </p>
-
-      <div class="contact-tags">
-        <span>Restaurants</span>
-        <span>Hotels</span>
-        <span>Wine Bars</span>
-        <span>Private Events</span>
-      </div>
-
-      <div class="contact-grid">
-
-        <a class="contact-card whatsapp" href="https://wa.me/66961644422" target="_blank">
-          <span>☏</span>
-          <div>
-            <strong>WhatsApp</strong>
-            <small>+66 961644422</small>
-          </div>
-        </a>
-
-        <a class="contact-card line" href="https://line.me/R/ti/p/@solariswine" target="_blank">
-          <span>LINE</span>
-          <div>
-            <strong>LINE</strong>
-            <small>@solariswine</small>
-          </div>
-        </a>
-
-        <a class="contact-card email" href="mailto:solarisintertrade@gmail.com">
-          <span>✉</span>
-          <div>
-            <strong>Email</strong>
-            <small>solarisintertrade@gmail.com</small>
-          </div>
-        </a>
-
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    © 2026 Solaris Wine. Premium Portuguese Wines.
-  </footer>
-
-  <button class="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">⌃</button>
-
-  <script src="script.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
