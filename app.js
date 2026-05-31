@@ -1,0 +1,271 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #080706;
+  color: #fff;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(8, 7, 6, 0.9);
+  backdrop-filter: blur(12px);
+  padding: 18px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.logo {
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #d4af37;
+}
+
+.cart-btn,
+.back-link {
+  color: #fff;
+  background: transparent;
+  border: 1px solid #d4af37;
+  padding: 10px 16px;
+  border-radius: 30px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.hero {
+  min-height: 72vh;
+  display: flex;
+  align-items: center;
+  padding: 7%;
+  background:
+    radial-gradient(circle at 70% 40%, rgba(212,175,55,0.22), transparent 32%),
+    linear-gradient(120deg, #080706, #1a0d0d);
+}
+
+.eyebrow {
+  color: #d4af37;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 7vw, 86px);
+  max-width: 760px;
+  margin: 0;
+}
+
+.hero-text {
+  color: #d8d0c5;
+  font-size: 20px;
+}
+
+.primary-btn,
+.card button,
+.checkout-btn,
+.checkout-actions button {
+  background: #d4af37;
+  color: #080706;
+  border: none;
+  padding: 13px 20px;
+  border-radius: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.products {
+  padding: 70px 7%;
+}
+
+.products h2 {
+  font-size: 36px;
+  margin-bottom: 28px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background: linear-gradient(180deg, #18100f, #0c0908);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 24px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+}
+
+.card img {
+  width: 100%;
+  height: 260px;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  margin-bottom: 4px;
+}
+
+.card p {
+  color: #b8afa6;
+}
+
+.card strong {
+  display: block;
+  margin: 14px 0;
+  color: #d4af37;
+  font-size: 20px;
+}
+
+.cart-drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 99;
+  justify-content: flex-end;
+}
+
+.cart-box {
+  width: 390px;
+  max-width: 100%;
+  height: 100%;
+  background: #120d0c;
+  padding: 26px;
+  overflow-y: auto;
+}
+
+.close {
+  float: right;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 34px;
+  cursor: pointer;
+}
+
+.cart-item {
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  padding: 14px 0;
+}
+
+.qty-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.qty-row button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #d4af37;
+  background: transparent;
+  color: #d4af37;
+  cursor: pointer;
+}
+
+.cart-total {
+  margin: 22px 0;
+  font-size: 22px;
+  color: #d4af37;
+  font-weight: 700;
+}
+
+.checkout-page {
+  padding: 50px 7%;
+}
+
+.checkout-card {
+  max-width: 850px;
+  margin: auto;
+  background: #120d0c;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 28px;
+  padding: 32px;
+}
+
+.small-text,
+.warning {
+  color: #c9beb3;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 24px 0;
+}
+
+input,
+textarea {
+  width: 100%;
+  background: #080706;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #fff;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 15px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+#orderMessage {
+  min-height: 280px;
+  margin-top: 20px;
+  white-space: pre-wrap;
+}
+
+.checkout-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    padding: 14px 5%;
+  }
+
+  .hero {
+    padding: 60px 5%;
+  }
+
+  .products,
+  .checkout-page {
+    padding: 40px 5%;
+  }
+
+  .checkout-card {
+    padding: 22px;
+  }
+}
