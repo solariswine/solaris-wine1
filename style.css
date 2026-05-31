@@ -53,7 +53,7 @@ body {
 /* HERO */
 
 .hero {
-  min-height: calc(100vh - 86px);
+  min-height: 70vh;
   display: flex;
   align-items: center;
   padding: 8% 7%;
