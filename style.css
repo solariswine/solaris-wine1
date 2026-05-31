@@ -187,7 +187,7 @@ body {
 }
 
 .checkout-page {
-  padding: 50px 7%;
+  padding: 90px 7% 50px;
 }
 
 .checkout-card {
@@ -260,10 +260,13 @@ textarea {
   }
 
   .hero,
-  .products,
-  .checkout-page {
-    padding: 40px 5%;
-  }
+.products {
+  padding: 40px 5%;
+}
+
+.checkout-page {
+  padding: 90px 5% 40px;
+}
 
   .checkout-card {
     padding: 22px;
@@ -271,9 +274,6 @@ textarea {
 }
 /* FIX CHECKOUT MOBILE */
 
-.checkout-page{
-  padding-top:120px;
-}
 
 .cart-box{
   padding-top:80px;
