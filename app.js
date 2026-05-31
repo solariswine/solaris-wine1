@@ -150,6 +150,7 @@ function renderCheckout() {
 
 function generateOrderNo() {
   const now = new Date();
+
   const date =
     now.getFullYear().toString() +
     String(now.getMonth() + 1).padStart(2, "0") +
@@ -238,7 +239,10 @@ function sendLine() {
 function sendWhatsApp() {
   generateOrder();
 
-  const message = encodeURIComponent(document.getElementById("orderMessage").value);
+  const messageBox = document.getElementById("orderMessage");
+  if (!messageBox) return;
+
+  const message = encodeURIComponent(messageBox.value);
   window.open(`https://wa.me/${STORE_WHATSAPP}?text=${message}`, "_blank");
 }
 
