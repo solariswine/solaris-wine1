@@ -1,79 +1,81 @@
 const products = [
-  {
-    id: 1,
-    name: "Mariana Red",
-    price: 890,
-    image: "images/mariana-red.png"
-  },
-  {
-    id: 2,
-    name: "Mariana White",
-    price: 750,
-    image: "images/mariana-white.png"
-  },
-  {
-    id: 3,
-    name: "Mariana Rosé",
-    price: 750,
-    image: "images/mariana-rose.png"
-  },
-  {
-    id: 4,
-    name: "Goivo Vinho Verde",
-    price: 690,
-    image: "images/goivo.png"
-  }
+  { id: 1, name: "Mariana Red", price: 890, image: "images/mariana-red.png" },
+  { id: 2, name: "Mariana White", price: 750, image: "images/mariana-white.png" },
+  { id: 3, name: "Mariana Rosé", price: 750, image: "images/mariana-rose.png" },
+  { id: 4, name: "Goivo Vinho Verde", price: 690, image: "images/goivo.png" }
 ];
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+}
+
+function updateCartCount() {
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  document.getElementById("cartCount").textContent = count;
+}
 
 function addToCart(id) {
   const product = products.find(p => p.id === id);
-
   const existing = cart.find(item => item.id === id);
 
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({
-      ...product,
-      qty: 1
-    });
-  }
+  if (existing) existing.qty++;
+  else cart.push({ ...product, qty: 1 });
 
+  saveCart();
   renderCart();
+  openCart();
 }
 
 function increase(id) {
   const item = cart.find(i => i.id === id);
-  item.qty++;
+  if (item) item.qty++;
+  saveCart();
   renderCart();
 }
 
 function decrease(id) {
   const item = cart.find(i => i.id === id);
+  if (!item) return;
 
-  if (item.qty > 1) {
-    item.qty--;
-  } else {
-    removeItem(id);
-  }
+  if (item.qty > 1) item.qty--;
+  else removeItem(id);
 
+  saveCart();
   renderCart();
 }
 
 function removeItem(id) {
   cart = cart.filter(item => item.id !== id);
+  saveCart();
   renderCart();
 }
 
-function renderCart() {
+function renderProducts() {
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
 
+  grid.innerHTML = products.map(product => `
+    <div class="card">
+      <img src="${product.image}" alt="${product.name}">
+      <h3>${product.name}</h3>
+      <p>Portugal · 2024</p>
+      <div class="price">${product.price.toLocaleString()} THB</div>
+      <button class="primary-btn" onclick="addToCart(${product.id})">
+        Add to Cart
+      </button>
+    </div>
+  `).join("");
+}
+
+function renderCart() {
   const cartItems = document.getElementById("cartItems");
   const checkoutItems = document.getElementById("checkoutItems");
-  const totalElement = document.getElementById("cartTotal");
+  const cartTotal = document.getElementById("cartTotal");
 
-  if (!cartItems) return;
+  if (!cartItems || !checkoutItems || !cartTotal) return;
 
   cartItems.innerHTML = "";
   checkoutItems.innerHTML = "";
@@ -81,142 +83,66 @@ function renderCart() {
   let total = 0;
 
   cart.forEach(item => {
-
     total += item.price * item.qty;
 
     cartItems.innerHTML += `
       <div class="cart-item">
-        <img src="${item.image}">
+        <img src="${item.image}" alt="${item.name}">
         <div>
           <strong>${item.name}</strong>
-          <div>฿${item.price}</div>
-
+          <p>${item.price.toLocaleString()} THB / bottle</p>
           <div class="qty">
-            <button onclick="decrease(${item.id})">-</button>
+            <button onclick="decrease(${item.id})">−</button>
             <span>${item.qty}</span>
             <button onclick="increase(${item.id})">+</button>
           </div>
-
-          <button class="remove"
-          onclick="removeItem(${item.id})">
-          Remove
-          </button>
+          <button class="remove" onclick="removeItem(${item.id})">Remove</button>
         </div>
-
-        <strong>
-          ฿${(item.price * item.qty).toLocaleString()}
-        </strong>
+        <strong>${(item.price * item.qty).toLocaleString()} THB</strong>
       </div>
     `;
 
     checkoutItems.innerHTML += `
       <div class="summary-item">
-        <img src="${item.image}">
+        <img src="${item.image}" alt="${item.name}">
         <div>
-          ${item.name}
-          <br>
-          Qty: ${item.qty}
+          <strong>${item.name}</strong>
+          <p>${item.price.toLocaleString()} THB x ${item.qty}</p>
         </div>
-
-        <strong>
-        ฿${(item.price * item.qty).toLocaleString()}
-        </strong>
+        <strong>${(item.price * item.qty).toLocaleString()} THB</strong>
       </div>
     `;
   });
 
-  totalElement.innerHTML =
-    "Total : ฿" + total.toLocaleString();
+  cartTotal.textContent = "Total: " + total.toLocaleString() + " THB";
+  updateCartCount();
 }
 
 function openCart() {
-  document
-    .getElementById("cartModal")
-    .classList.add("active");
+  renderCart();
+  document.getElementById("cartModal").classList.add("active");
 }
 
 function closeCart() {
-  document
-    .getElementById("cartModal")
-    .classList.remove("active");
+  document.getElementById("cartModal").classList.remove("active");
 }
 
 function openCheckout() {
-
-  if(cart.length === 0){
+  if (cart.length === 0) {
     alert("Your cart is empty");
     return;
   }
 
-  document
-    .getElementById("checkoutModal")
-    .classList.add("active");
+  renderCart();
+  closeCart();
+  document.getElementById("checkoutModal").classList.add("active");
 }
 
 function closeCheckout() {
-  document
-    .getElementById("checkoutModal")
-    .classList.remove("active");
+  document.getElementById("checkoutModal").classList.remove("active");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
-  const form =
-    document.getElementById("orderForm");
-
-  if (!form) return;
-
-  form.addEventListener("submit", async (e) => {
-
-    e.preventDefault();
-
-    const status =
-      document.getElementById("orderStatus");
-
-    status.innerHTML =
-      "Submitting order...";
-
-    const formData = new FormData(form);
-
-    formData.append(
-      "order",
-      JSON.stringify(cart)
-    );
-
-    try {
-
-      const response = await fetch(
-        "/api/order",
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-
-      if(response.ok){
-
-        status.innerHTML =
-          "Order submitted successfully.";
-
-        cart = [];
-        renderCart();
-
-        form.reset();
-
-      } else {
-
-        status.innerHTML =
-          "Error submitting order.";
-
-      }
-
-    } catch(error){
-
-      status.innerHTML =
-        "Connection error.";
-
-    }
-
-  });
-
+  renderProducts();
+  renderCart();
 });
