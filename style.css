@@ -381,3 +381,37 @@ form button,
     grid-template-columns: 58px 1fr;
   }
 }
+.card img {
+  height: 420px;
+}
+
+.product-qty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.product-qty button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #d4af37;
+  background: transparent;
+  color: #d4af37;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.product-qty span {
+  min-width: 28px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+@media (max-width: 560px) {
+  .card img {
+    height: 380px;
+  }
+}
