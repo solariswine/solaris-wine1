@@ -10,63 +10,84 @@
 
 <header class="header">
   <div class="logo">SOLARIS WINE</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#collection">Our Collection</a>
+    <a href="#producer">Our Producer</a>
+    <a href="#contact">Contact</a>
+  </nav>
   <button class="cart-btn" onclick="openCart()">Cart <span id="cartCount">0</span></button>
 </header>
 
-<section class="hero">
-  <div class="hero-content">
+<section id="home" class="hero">
+  <div class="hero-text">
     <p class="eyebrow">Premium Portuguese Wine</p>
-    <h1>Elegant Wines for Fine Dining</h1>
+    <h1>Curated Wines for Fine Dining & Wine Bars</h1>
     <p>Imported by Solaris Intertrade Co., Ltd.</p>
-    <a href="#products" class="primary-btn">View Collection</a>
+    <a href="#collection" class="primary-btn">Explore Collection</a>
+  </div>
+  <div class="hero-bottle">
+    <img src="images/mariana-red.png" alt="Mariana Red">
   </div>
 </section>
 
-<section id="products" class="products">
-  <h2>Our Wine Collection</h2>
-
-  <div class="grid">
-    <div class="card">
-      <img src="images/bottles/mariana-red.png" alt="Mariana Red">
-      <h3>Mariana Red</h3>
-      <p>Portugal · 2024</p>
-      <strong>890 THB</strong>
-      <button onclick="addToCart('Mariana Red', 890)">Add to Cart</button>
-    </div>
-
-    <div class="card">
-      <img src="images/bottles/mariana-white.png" alt="Mariana White">
-      <h3>Mariana White</h3>
-      <p>Portugal · 2024</p>
-      <strong>750 THB</strong>
-      <button onclick="addToCart('Mariana White', 750)">Add to Cart</button>
-    </div>
-
-    <div class="card">
-      <img src="images/bottles/mariana-rose.png" alt="Mariana Rosé">
-      <h3>Mariana Rosé</h3>
-      <p>Portugal · 2024</p>
-      <strong>750 THB</strong>
-      <button onclick="addToCart('Mariana Rosé', 750)">Add to Cart</button>
-    </div>
-
-    <div class="card">
-      <img src="images/bottles/goivo.png" alt="Goivo Vinho Verde">
-      <h3>Goivo Vinho Verde</h3>
-      <p>Portugal · 2024</p>
-      <strong>690 THB</strong>
-      <button onclick="addToCart('Goivo Vinho Verde', 690)">Add to Cart</button>
-    </div>
-  </div>
+<section id="collection" class="section">
+  <h2>Our Collection</h2>
+  <div id="productGrid" class="grid"></div>
 </section>
 
-<div id="cartDrawer" class="cart-drawer">
-  <div class="cart-box">
+<section id="producer" class="section producer">
+  <h2>Our Producer</h2>
+  <p>
+    Herdade do Rocim is a respected Portuguese wine producer from Alentejo,
+    known for elegant, expressive wines with strong regional identity.
+  </p>
+</section>
+
+<section id="contact" class="section contact">
+  <h2>Contact</h2>
+  <p>Email: orders@solariswine.com</p>
+  <p>LINE: @solariswine</p>
+  <p>WhatsApp: +66 96 164 4422</p>
+</section>
+
+<div id="cartModal" class="modal">
+  <div class="modal-box">
     <button class="close" onclick="closeCart()">×</button>
     <h2>Your Cart</h2>
     <div id="cartItems"></div>
-    <div class="cart-total">Total: <span id="cartTotal">0</span> THB</div>
-    <button class="checkout-btn" onclick="goCheckout()">Confirm Order / QR Payment</button>
+    <div class="total">Total: <span id="cartTotal">0</span> THB</div>
+    <button class="primary-btn full" onclick="openCheckout()">Checkout / QR Payment</button>
+  </div>
+</div>
+
+<div id="checkoutModal" class="modal">
+  <div class="modal-box checkout-box">
+    <button class="close" onclick="closeCheckout()">×</button>
+    <h2>Confirm Order & Payment</h2>
+
+    <div id="checkoutSummary"></div>
+
+    <div class="qr-box">
+      <img src="images/payment-qr.png" alt="Solaris Intertrade QR Payment">
+    </div>
+
+    <form id="orderForm">
+      <input name="name" placeholder="Full Name" required>
+      <input name="phone" placeholder="Phone Number" required>
+      <input name="email" type="email" placeholder="Email" required>
+      <textarea name="address" placeholder="Delivery Address" required></textarea>
+      <input name="line" placeholder="LINE ID">
+      <input name="whatsapp" placeholder="WhatsApp">
+      <input name="facebook" placeholder="Facebook">
+      <input name="instagram" placeholder="Instagram">
+      <textarea name="note" placeholder="Note"></textarea>
+      <label class="upload-label">Upload Payment Slip</label>
+      <input name="slip" type="file" accept="image/*,.pdf" required>
+      <button type="submit" class="primary-btn full">Submit Order</button>
+    </form>
+
+    <p id="orderStatus"></p>
   </div>
 </div>
 
