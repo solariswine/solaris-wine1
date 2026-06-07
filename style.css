@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -16,26 +20,30 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   padding: 18px 6%;
-  background: rgba(7, 4, 3, 0.94);
+  background: rgba(7, 4, 3, 0.96);
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
 }
 
 .logo {
   color: #d4af37;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 3px;
+  white-space: nowrap;
 }
 
 nav {
   display: flex;
-  gap: 22px;
+  gap: 20px;
+  overflow-x: auto;
 }
 
 nav a {
   color: #d8d0c5;
   text-decoration: none;
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .cart-btn {
@@ -45,6 +53,7 @@ nav a {
   border-radius: 999px;
   padding: 10px 18px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .hero {
@@ -88,16 +97,28 @@ nav a {
   filter: drop-shadow(0 30px 60px rgba(212,175,55,0.22));
 }
 
-.primary-btn {
+.primary-btn,
+.secondary-btn {
   display: inline-block;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-weight: 900;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+
+.primary-btn {
   background: linear-gradient(135deg, #d4af37, #f4d56a);
   color: #090504;
   border: none;
-  border-radius: 999px;
-  padding: 14px 24px;
-  font-weight: 800;
-  text-decoration: none;
-  cursor: pointer;
+}
+
+.secondary-btn {
+  background: transparent;
+  color: #d4af37;
+  border: 1px solid #d4af37;
+  margin-top: 12px;
 }
 
 .section {
@@ -109,17 +130,37 @@ nav a {
   margin: 0 0 34px;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 26px;
+.collection-wrap {
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 6px 34px;
+}
+
+.slider::-webkit-scrollbar {
+  height: 8px;
+}
+
+.slider::-webkit-scrollbar-thumb {
+  background: rgba(212,175,55,0.35);
+  border-radius: 20px;
+}
+
+.slider .card {
+  min-width: 300px;
+  max-width: 300px;
 }
 
 .card {
   background: linear-gradient(180deg, #160909, #080504);
   border: 1px solid rgba(212, 175, 55, 0.22);
   border-radius: 30px;
-  padding: 26px;
+  padding: 24px;
   text-align: center;
   box-shadow: 0 22px 55px rgba(0,0,0,0.45);
 }
@@ -133,7 +174,7 @@ nav a {
 }
 
 .card h3 {
-  font-size: 26px;
+  font-size: 24px;
   margin: 8px 0;
 }
 
@@ -143,12 +184,13 @@ nav a {
 
 .price {
   color: #d4af37;
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 900;
   margin: 16px 0;
 }
 
-.product-qty {
+.product-qty,
+.qty {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -172,7 +214,29 @@ nav a {
 .qty span {
   min-width: 28px;
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 900;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 42%;
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid #d4af37;
+  background: #090504;
+  color: #d4af37;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.slider-btn.left {
+  left: -10px;
+}
+
+.slider-btn.right {
+  right: -10px;
 }
 
 .producer,
@@ -246,13 +310,6 @@ nav a {
   object-fit: contain;
 }
 
-.qty {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-top: 8px;
-}
-
 .remove {
   background: transparent;
   border: none;
@@ -270,7 +327,6 @@ nav a {
 
 .full {
   width: 100%;
-  text-align: center;
 }
 
 .qr-box {
@@ -284,6 +340,19 @@ nav a {
 .qr-box img {
   width: 100%;
   display: block;
+}
+
+.bank-info {
+  text-align: center;
+  color: #d8d0c5;
+  line-height: 1.7;
+  margin: 12px 0 28px;
+  font-size: 15px;
+}
+
+.bank-info strong {
+  color: #d4af37;
+  font-size: 18px;
 }
 
 form {
@@ -327,9 +396,35 @@ form button,
   margin-top: 18px;
 }
 
+.success-box {
+  text-align: center;
+}
+
+.success-box p {
+  color: #c9beb3;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+#successSummary {
+  text-align: left;
+  margin: 24px 0;
+  border-top: 1px solid rgba(212,175,55,0.25);
+  border-bottom: 1px solid rgba(212,175,55,0.25);
+  padding: 18px 0;
+}
+
 @media (max-width: 900px) {
+  .header {
+    padding: 14px 4%;
+  }
+
   nav {
-    display: none;
+    max-width: 42vw;
+  }
+
+  nav a {
+    font-size: 12px;
   }
 
   .hero {
@@ -345,22 +440,20 @@ form button,
     max-height: 420px;
   }
 
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   form {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 560px) {
-  .header {
-    padding: 14px 5%;
+  .logo {
+    font-size: 16px;
+    letter-spacing: 2px;
   }
 
-  .logo {
-    font-size: 18px;
+  .cart-btn {
+    padding: 8px 12px;
+    font-size: 13px;
   }
 
   .hero {
@@ -381,8 +474,9 @@ form button,
     padding: 58px 5%;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
+  .slider .card {
+    min-width: 280px;
+    max-width: 280px;
   }
 
   .card img {
@@ -398,85 +492,4 @@ form button,
   .summary-item {
     grid-template-columns: 70px 1fr;
   }
-}
-.bank-info {
-  text-align: center;
-  color: #d8d0c5;
-  line-height: 1.7;
-  margin: 12px 0 28px;
-  font-size: 15px;
-}
-
-.bank-info strong {
-  color: #d4af37;
-  font-size: 18px;
-}
-
-.success-box {
-  text-align: center;
-}
-
-.success-box p {
-  color: #c9beb3;
-  font-size: 18px;
-  line-height: 1.6;
-}
-@media (max-width: 900px) {
-  nav {
-    display: flex !important;
-    gap: 10px;
-    overflow-x: auto;
-    max-width: 52vw;
-  }
-
-  nav a {
-    font-size: 12px;
-    white-space: nowrap;
-  }
-}
-
-.collection-wrap {
-  position: relative;
-}
-
-.slider {
-  display: flex;
-  gap: 24px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 10px 4px 30px;
-}
-
-.slider .card {
-  min-width: 300px;
-  max-width: 300px;
-}
-
-.slider-btn {
-  position: absolute;
-  top: 42%;
-  z-index: 5;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: 1px solid #d4af37;
-  background: #090504;
-  color: #d4af37;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-.slider-btn.left {
-  left: -10px;
-}
-
-.slider-btn.right {
-  right: -10px;
-}
-
-.price-tbc {
-  color: #b9afa6;
-  font-size: 20px;
-  font-weight: 700;
-  margin: 16px 0;
 }
