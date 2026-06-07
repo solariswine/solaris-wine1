@@ -17,7 +17,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 18px 6%;
-  background: rgba(7, 4, 3, 0.92);
+  background: rgba(7, 4, 3, 0.94);
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
 }
 
@@ -55,7 +55,7 @@ nav a {
   align-items: center;
   gap: 40px;
   background:
-    radial-gradient(circle at 70% 45%, rgba(212,175,55,0.24), transparent 28%),
+    radial-gradient(circle at 70% 45%, rgba(212,175,55,0.24), transparent 30%),
     linear-gradient(120deg, #070403, #1c0908);
 }
 
@@ -83,9 +83,9 @@ nav a {
 }
 
 .hero-bottle img {
-  max-height: 560px;
+  max-height: 600px;
   max-width: 100%;
-  filter: drop-shadow(0 30px 55px rgba(212,175,55,0.2));
+  filter: drop-shadow(0 30px 60px rgba(212,175,55,0.22));
 }
 
 .primary-btn {
@@ -126,9 +126,10 @@ nav a {
 
 .card img {
   width: 100%;
-  height: 300px;
+  height: 420px;
   object-fit: contain;
   margin-bottom: 18px;
+  filter: drop-shadow(0 25px 45px rgba(212,175,55,0.12));
 }
 
 .card h3 {
@@ -145,6 +146,33 @@ nav a {
   font-size: 26px;
   font-weight: 800;
   margin: 16px 0;
+}
+
+.product-qty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.product-qty button,
+.qty button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #d4af37;
+  background: transparent;
+  color: #d4af37;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.product-qty span,
+.qty span {
+  min-width: 28px;
+  font-size: 22px;
+  font-weight: 800;
 }
 
 .producer,
@@ -204,17 +232,17 @@ nav a {
 .cart-item,
 .summary-item {
   display: grid;
-  grid-template-columns: 70px 1fr auto;
-  gap: 14px;
+  grid-template-columns: 80px 1fr auto;
+  gap: 16px;
   align-items: center;
   border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding: 14px 0;
+  padding: 16px 0;
 }
 
 .cart-item img,
 .summary-item img {
-  width: 58px;
-  height: 92px;
+  width: 70px;
+  height: 110px;
   object-fit: contain;
 }
 
@@ -223,16 +251,6 @@ nav a {
   gap: 12px;
   align-items: center;
   margin-top: 8px;
-}
-
-.qty button {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: transparent;
-  color: #d4af37;
-  border: 1px solid #d4af37;
-  cursor: pointer;
 }
 
 .remove {
@@ -324,7 +342,7 @@ form button,
   }
 
   .hero-bottle img {
-    max-height: 380px;
+    max-height: 420px;
   }
 
   .grid {
@@ -368,7 +386,7 @@ form button,
   }
 
   .card img {
-    height: 280px;
+    height: 380px;
   }
 
   .modal-box {
@@ -378,40 +396,6 @@ form button,
 
   .cart-item,
   .summary-item {
-    grid-template-columns: 58px 1fr;
-  }
-}
-.card img {
-  height: 420px;
-}
-
-.product-qty {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  margin: 16px 0;
-}
-
-.product-qty button {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid #d4af37;
-  background: transparent;
-  color: #d4af37;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.product-qty span {
-  min-width: 28px;
-  font-size: 22px;
-  font-weight: 800;
-}
-
-@media (max-width: 560px) {
-  .card img {
-    height: 380px;
+    grid-template-columns: 70px 1fr;
   }
 }
