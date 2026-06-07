@@ -3,6 +3,7 @@ const products = [
   { id: 2, name: "Mariana White", price: 990, image: "images/mariana-white.png" },
   { id: 3, name: "Mariana Rosé", price: 990, image: "images/mariana-rose.png" },
   { id: 4, name: "Goivo Vinho Verde", price: 890, image: "images/goivo.png" },
+  
   { id: 5, name: "Vale da Mata Red", price: 1190, image: "images/vale-da-mata-red.png" },
   { id: 6, name: "Vale da Mata White", price: 1050, image: "images/vale-da-mata-white.png" },
   { id: 7, name: "Raio de Luz Red", price: 1,190, image: "images/raio-de-luz-red.png" },
