@@ -6,6 +6,7 @@ const products = [
 ];
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let selectedQty = {};
 
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
@@ -17,14 +18,59 @@ function updateCartCount() {
   document.getElementById("cartCount").textContent = count;
 }
 
+function renderProducts() {
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
+
+  grid.innerHTML = products.map(product => {
+    const qty = selectedQty[product.id] || 1;
+
+    return `
+      <div class="card">
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>Portugal · 2024</p>
+        <div class="price">${product.price.toLocaleString()} THB</div>
+
+        <div class="product-qty">
+          <button onclick="decreaseProductQty(${product.id})">−</button>
+          <span>${qty}</span>
+          <button onclick="increaseProductQty(${product.id})">+</button>
+        </div>
+
+        <button class="primary-btn" onclick="addToCart(${product.id})">
+          Add ${qty} to Cart
+        </button>
+      </div>
+    `;
+  }).join("");
+}
+
+function increaseProductQty(id) {
+  selectedQty[id] = (selectedQty[id] || 1) + 1;
+  renderProducts();
+}
+
+function decreaseProductQty(id) {
+  selectedQty[id] = Math.max(1, (selectedQty[id] || 1) - 1);
+  renderProducts();
+}
+
 function addToCart(id) {
   const product = products.find(p => p.id === id);
+  const qty = selectedQty[id] || 1;
   const existing = cart.find(item => item.id === id);
 
-  if (existing) existing.qty++;
-  else cart.push({ ...product, qty: 1 });
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    cart.push({ ...product, qty });
+  }
+
+  selectedQty[id] = 1;
 
   saveCart();
+  renderProducts();
   renderCart();
   openCart();
 }
@@ -32,6 +78,7 @@ function addToCart(id) {
 function increase(id) {
   const item = cart.find(i => i.id === id);
   if (item) item.qty++;
+
   saveCart();
   renderCart();
 }
@@ -40,8 +87,12 @@ function decrease(id) {
   const item = cart.find(i => i.id === id);
   if (!item) return;
 
-  if (item.qty > 1) item.qty--;
-  else removeItem(id);
+  if (item.qty > 1) {
+    item.qty--;
+  } else {
+    removeItem(id);
+    return;
+  }
 
   saveCart();
   renderCart();
@@ -51,23 +102,6 @@ function removeItem(id) {
   cart = cart.filter(item => item.id !== id);
   saveCart();
   renderCart();
-}
-
-function renderProducts() {
-  const grid = document.getElementById("productGrid");
-  if (!grid) return;
-
-  grid.innerHTML = products.map(product => `
-    <div class="card">
-      <img src="${product.image}" alt="${product.name}">
-      <h3>${product.name}</h3>
-      <p>Portugal · 2024</p>
-      <div class="price">${product.price.toLocaleString()} THB</div>
-      <button class="primary-btn" onclick="addToCart(${product.id})">
-        Add to Cart
-      </button>
-    </div>
-  `).join("");
 }
 
 function renderCart() {
@@ -83,7 +117,8 @@ function renderCart() {
   let total = 0;
 
   cart.forEach(item => {
-    total += item.price * item.qty;
+    const subtotal = item.price * item.qty;
+    total += subtotal;
 
     cartItems.innerHTML += `
       <div class="cart-item">
@@ -91,14 +126,17 @@ function renderCart() {
         <div>
           <strong>${item.name}</strong>
           <p>${item.price.toLocaleString()} THB / bottle</p>
+
           <div class="qty">
             <button onclick="decrease(${item.id})">−</button>
             <span>${item.qty}</span>
             <button onclick="increase(${item.id})">+</button>
           </div>
+
           <button class="remove" onclick="removeItem(${item.id})">Remove</button>
         </div>
-        <strong>${(item.price * item.qty).toLocaleString()} THB</strong>
+
+        <strong>${subtotal.toLocaleString()} THB</strong>
       </div>
     `;
 
@@ -109,7 +147,7 @@ function renderCart() {
           <strong>${item.name}</strong>
           <p>${item.price.toLocaleString()} THB x ${item.qty}</p>
         </div>
-        <strong>${(item.price * item.qty).toLocaleString()} THB</strong>
+        <strong>${subtotal.toLocaleString()} THB</strong>
       </div>
     `;
   });
@@ -145,4 +183,36 @@ function closeCheckout() {
 document.addEventListener("DOMContentLoaded", () => {
   renderProducts();
   renderCart();
+
+  const form = document.getElementById("orderForm");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const status = document.getElementById("orderStatus");
+    status.textContent = "Submitting order...";
+
+    const formData = new FormData(form);
+    formData.append("order", JSON.stringify(cart));
+
+    try {
+      const response = await fetch("/api/order", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        status.textContent = "Order submitted successfully. Thank you.";
+        cart = [];
+        saveCart();
+        renderCart();
+        form.reset();
+      } else {
+        status.textContent = "Order submission failed. Please try again.";
+      }
+    } catch (error) {
+      status.textContent = "Connection error. Please try again.";
+    }
+  });
 });
