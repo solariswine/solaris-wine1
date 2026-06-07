@@ -399,3 +399,25 @@ form button,
     grid-template-columns: 70px 1fr;
   }
 }
+.bank-info {
+  text-align: center;
+  color: #d8d0c5;
+  line-height: 1.7;
+  margin: 12px 0 28px;
+  font-size: 15px;
+}
+
+.bank-info strong {
+  color: #d4af37;
+  font-size: 18px;
+}
+
+.success-box {
+  text-align: center;
+}
+
+.success-box p {
+  color: #c9beb3;
+  font-size: 18px;
+  line-height: 1.6;
+}
