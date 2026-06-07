@@ -1,15 +1,21 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solaris Wine</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header class="header">
-  <div class="logo">SOLARIS WINE</div>
+
+  <div class="logo">
+    SOLARIS WINE
+  </div>
 
   <nav>
     <a href="#home">Home</a>
@@ -19,101 +25,265 @@
   </nav>
 
   <button class="cart-btn" onclick="openCart()">
-    Cart <span id="cartCount">0</span>
+    Cart (<span id="cartCount">0</span>)
   </button>
+
 </header>
 
 <section id="home" class="hero">
-  <div>
-    <p class="eyebrow">Premium Portuguese Wines</p>
-    <h1>Curated Wines From Portugal</h1>
-    <p>Imported by Solaris Intertrade Co., Ltd.</p>
-    <a href="#collection" class="primary-btn">Explore Collection</a>
+
+  <div class="hero-content">
+
+```
+<p class="eyebrow">
+  Premium Portuguese Wines
+</p>
+
+<h1>
+  Curated Wines From Portugal
+</h1>
+
+<p>
+  Imported by Solaris Intertrade Co., Ltd.
+</p>
+
+<a href="#collection" class="primary-btn">
+  Explore Collection
+</a>
+```
+
   </div>
 
   <div class="hero-bottle">
     <img src="images/mariana-red.png" alt="Mariana Red">
   </div>
+
 </section>
 
 <section id="collection" class="section">
-  <h2>Our Collection</h2>
+
+  <h2>
+    Our Collection
+  </h2>
+
   <div id="productGrid" class="grid"></div>
+
 </section>
 
 <section id="producer" class="section producer">
-  <h2>Our Producer</h2>
+
+  <h2>
+    Our Producer
+  </h2>
+
   <p>
-    Herdade do Rocim is one of Portugal’s respected wineries, producing elegant wines
-    that express the character of Alentejo through modern winemaking and regional identity.
+    Herdade do Rocim is one of Portugal's respected wineries,
+    producing elegant wines that express the character of Alentejo
+    through modern winemaking and sustainable viticulture.
   </p>
+
 </section>
 
 <section id="contact" class="section contact">
-  <h2>Contact</h2>
-  <p>Email: orders@solariswine.com</p>
-  <p>LINE: @solariswine</p>
-  <p>WhatsApp: +66 96 164 4422</p>
+
+  <h2>
+    Contact
+  </h2>
+
+  <p>
+    Email:
+    orders@solariswine.com
+  </p>
+
+  <p>
+    LINE:
+    @solariswine
+  </p>
+
+  <p>
+    WhatsApp:
+    +66 96 164 4422
+  </p>
+
 </section>
 
 <div id="cartModal" class="modal">
+
   <div class="modal-box">
-    <button class="close" onclick="closeCart()">×</button>
-    <h2>Your Cart</h2>
-    <div id="cartItems"></div>
-    <div id="cartTotal" class="total">Total: 0 THB</div>
-    <button class="primary-btn full" onclick="openCheckout()">Checkout / QR Payment</button>
+
+```
+<button class="close" onclick="closeCart()">
+  ×
+</button>
+
+<h2>
+  Your Cart
+</h2>
+
+<div id="cartItems"></div>
+
+<div id="cartTotal" class="total">
+  Total: 0 THB
+</div>
+
+<button
+  class="primary-btn full"
+  onclick="openCheckout()">
+
+  Checkout
+
+</button>
+```
+
   </div>
+
 </div>
 
 <div id="checkoutModal" class="modal">
-  <div class="modal-box checkout-box">
-    <button class="close" onclick="closeCheckout()">×</button>
-    <h2>Confirm Order & Payment</h2>
 
-   <div id="checkoutItems"></div>
-<div id="checkoutTotal" class="total">Total: 0 THB</div>
+  <div class="modal-box checkout-box">
+
+```
+<button class="close" onclick="closeCheckout()">
+  ×
+</button>
+
+<h2>
+  Confirm Payment
+</h2>
+
+<div id="checkoutItems"></div>
+
+<div id="checkoutTotal" class="total">
+  Total: 0 THB
+</div>
 
 <div class="qr-box">
-  <img src="images/payment-qr.png" alt="Solaris QR Payment">
+  <img
+    src="images/payment-qr.png"
+    alt="Payment QR">
 </div>
 
 <div class="bank-info">
-  <strong>SOLARIS INTERTRADE</strong><br>
-  Bank: Bangkok Bank<br>
-  Account Name: Solaris Intertrade Co., Ltd.<br>
-  Reference No: KPS004KB000002291150
+
+  <strong>
+    Solaris Intertrade Co., Ltd.
+  </strong>
+
+  <br><br>
+
+  Bangkok Bank
+
+  <br>
+
+  Account Name:
+  Solaris Intertrade Co., Ltd.
+
+  <br>
+
+  Reference:
+  KPS004KB000002291150
+
 </div>
 
-    <form id="orderForm">
-      <input name="name" placeholder="Full Name" required>
-      <input name="phone" placeholder="Phone Number" required>
-      <input name="email" type="email" placeholder="Email" required>
-      <textarea name="address" placeholder="Delivery Address" required></textarea>
+<form id="orderForm">
 
-      <input name="line" placeholder="LINE ID">
-      <input name="whatsapp" placeholder="WhatsApp">
-      <input name="facebook" placeholder="Facebook">
-      <input name="instagram" placeholder="Instagram">
+  <input
+    name="name"
+    placeholder="Full Name"
+    required>
 
-      <textarea name="note" placeholder="Additional Note"></textarea>
+  <input
+    name="phone"
+    placeholder="Phone Number"
+    required>
 
-      <label class="upload-label">Upload Payment Slip</label>
-      <input name="slip" type="file" accept="image/*,.pdf" required>
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    required>
 
-      <button type="submit" class="primary-btn full">Submit Order</button>
-    </form>
+  <textarea
+    name="address"
+    placeholder="Delivery Address"
+    required></textarea>
 
-    <div id="orderStatus"></div>
+  <input
+    name="line"
+    placeholder="LINE ID">
+
+  <input
+    name="whatsapp"
+    placeholder="WhatsApp">
+
+  <input
+    name="facebook"
+    placeholder="Facebook">
+
+  <input
+    name="instagram"
+    placeholder="Instagram">
+
+  <textarea
+    name="note"
+    placeholder="Additional Note"></textarea>
+
+  <label class="upload-label">
+    Upload Payment Slip
+  </label>
+
+  <input
+    type="file"
+    name="slip"
+    required>
+
+  <button
+    type="submit"
+    class="primary-btn full">
+
+    Submit Order
+
+  </button>
+
+</form>
+
+<div id="orderStatus"></div>
+```
+
   </div>
+
 </div>
+
 <div id="successModal" class="modal">
+
   <div class="modal-box success-box">
-    <h2>Order Submitted Successfully</h2>
-    <p>Thank you for your order. We have received your order and payment slip.</p>
-    <button class="primary-btn full" onclick="goHome()">Back to Home</button>
+
+```
+<h2>
+  Order Submitted Successfully
+</h2>
+
+<p>
+  Thank you for your order.
+  We have received your order
+  and payment information.
+</p>
+
+<button
+  class="primary-btn full"
+  onclick="goHome()">
+
+  Back To Home
+
+</button>
+```
+
   </div>
+
 </div>
+
 <script src="app.js"></script>
+
 </body>
 </html>
