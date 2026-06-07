@@ -425,6 +425,7 @@ form.addEventListener(
   }
 );
 ```
+  alert("app.js loaded");
 
 }
 );
