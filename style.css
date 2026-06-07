@@ -421,3 +421,62 @@ form button,
   font-size: 18px;
   line-height: 1.6;
 }
+@media (max-width: 900px) {
+  nav {
+    display: flex !important;
+    gap: 10px;
+    overflow-x: auto;
+    max-width: 52vw;
+  }
+
+  nav a {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+.collection-wrap {
+  position: relative;
+}
+
+.slider {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 4px 30px;
+}
+
+.slider .card {
+  min-width: 300px;
+  max-width: 300px;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 42%;
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid #d4af37;
+  background: #090504;
+  color: #d4af37;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.slider-btn.left {
+  left: -10px;
+}
+
+.slider-btn.right {
+  right: -10px;
+}
+
+.price-tbc {
+  color: #b9afa6;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 16px 0;
+}
