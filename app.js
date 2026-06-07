@@ -2,8 +2,18 @@ const products = [
   { id: 1, name: "Mariana Red", price: 890, image: "images/mariana-red.png" },
   { id: 2, name: "Mariana White", price: 750, image: "images/mariana-white.png" },
   { id: 3, name: "Mariana Rosé", price: 750, image: "images/mariana-rose.png" },
-  { id: 4, name: "Goivo Vinho Verde", price: 690, image: "images/goivo.png" }
+  { id: 4, name: "Goivo Vinho Verde", price: 690, image: "images/goivo.png" },
+
+  { id: 5, name: "Vale da Mata Red", price: null, image: "images/vale-da-mata-red.png" },
+  { id: 6, name: "Vale da Mata White", price: null, image: "images/vale-da-mata-white.png" },
+  { id: 7, name: "Raio de Luz Red", price: null, image: "images/raio-de-luz-red.png" },
+  { id: 8, name: "Raio de Luz White", price: null, image: "images/raio-de-luz-white.png" },
+  { id: 9, name: "Herdade do Rocim Red", price: null, image: "images/rocim-red.png" },
+  { id: 10, name: "Herdade do Rocim White", price: null, image: "images/rocim-white.png" },
+  { id: 11, name: "Herdade do Rocim Reserva Red", price: null, image: "images/rocim-reserva-red.png" },
+  { id: 12, name: "Herdade do Rocim Alicante Bouschet", price: null, image: "images/alicante-bouschet.png" }
 ];
+
 
 let cart = [];
 let selectedQty = {};
@@ -17,17 +27,33 @@ function renderProducts() {
   const grid = document.getElementById("productGrid");
   if (!grid) return;
 
-  grid.innerHTML = "";
+  grid.className = "collection-wrap";
+
+  grid.innerHTML = `
+    <button class="slider-btn left" onclick="slideCollection(-1)">‹</button>
+    <div id="wineSlider" class="slider"></div>
+    <button class="slider-btn right" onclick="slideCollection(1)">›</button>
+  `;
+
+  const slider = document.getElementById("wineSlider");
 
   products.forEach(product => {
     const qty = selectedQty[product.id] || 1;
+    const priceHtml = product.price
+      ? `<div class="price">${product.price.toLocaleString()} THB</div>`
+      : `<div class="price-tbc">Price TBC</div>`;
 
-    grid.innerHTML += `
+    const buttonHtml = product.price
+      ? `<button class="primary-btn" onclick="addToCart(${product.id})">Add ${qty} To Cart</button>`
+      : `<button class="primary-btn" disabled>Coming Soon</button>`;
+
+    slider.innerHTML += `
       <div class="card">
         <img src="${product.image}" alt="${product.name}">
         <h3>${product.name}</h3>
         <p>Portugal · 2024</p>
-        <div class="price">${product.price.toLocaleString()} THB</div>
+
+        ${priceHtml}
 
         <div class="product-qty">
           <button onclick="decreaseProductQty(${product.id})">−</button>
@@ -35,14 +61,21 @@ function renderProducts() {
           <button onclick="increaseProductQty(${product.id})">+</button>
         </div>
 
-        <button class="primary-btn" onclick="addToCart(${product.id})">
-          Add ${qty} To Cart
-        </button>
+        ${buttonHtml}
       </div>
     `;
   });
 }
 
+function slideCollection(direction) {
+  const slider = document.getElementById("wineSlider");
+  if (!slider) return;
+
+  slider.scrollBy({
+    left: direction * 330,
+    behavior: "smooth"
+  });
+}
 function increaseProductQty(id) {
   selectedQty[id] = (selectedQty[id] || 1) + 1;
   renderProducts();
