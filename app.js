@@ -1,17 +1,16 @@
 const products = [
-  { id: 1, name: "Mariana Red", price: 890, image: "images/mariana-red.png" },
-  { id: 2, name: "Mariana White", price: 750, image: "images/mariana-white.png" },
-  { id: 3, name: "Mariana Rosé", price: 750, image: "images/mariana-rose.png" },
-  { id: 4, name: "Goivo Vinho Verde", price: 690, image: "images/goivo.png" },
-
-  { id: 5, name: "Vale da Mata Red", price: 0, image: "images/vale-da-mata-red.png" },
-  { id: 6, name: "Vale da Mata White", price: 0, image: "images/vale-da-mata-white.png" },
-  { id: 7, name: "Raio de Luz Red", price: 0, image: "images/raio-de-luz-red.png" },
-  { id: 8, name: "Raio de Luz White", price: 0, image: "images/raio-de-luz-white.png" },
-  { id: 9, name: "Herdade do Rocim Red", price: 0, image: "images/rocim-red.png" },
-  { id: 10, name: "Herdade do Rocim White", price: 0, image: "images/rocim-white.png" },
-  { id: 11, name: "Herdade do Rocim Reserva Red", price: 0, image: "images/rocim-reserva-red.png" },
-  { id: 12, name: "Herdade do Rocim Alicante Bouschet", price: 0, image: "images/alicante-bouschet.png" }
+  { id: 1, name: "Mariana Red", price: 1,090, image: "images/mariana-red.png" },
+  { id: 2, name: "Mariana White", price: 990, image: "images/mariana-white.png" },
+  { id: 3, name: "Mariana Rosé", price: 990, image: "images/mariana-rose.png" },
+  { id: 4, name: "Goivo Vinho Verde", price: 890, image: "images/goivo.png" },
+  { id: 5, name: "Vale da Mata Red", price: 1190, image: "images/vale-da-mata-red.png" },
+  { id: 6, name: "Vale da Mata White", price: 1050, image: "images/vale-da-mata-white.png" },
+  { id: 7, name: "Raio de Luz Red", price: 1,190, image: "images/raio-de-luz-red.png" },
+  { id: 8, name: "Raio de Luz White", price: 1,050, image: "images/raio-de-luz-white.png" },
+  { id: 9, name: "Herdade do Rocim Red", price: 1,290, image: "images/rocim-red.png" },
+  { id: 10, name: "Herdade do Rocim White", price: 1,150, image: "images/rocim-white.png" },
+  { id: 11, name: "Herdade do Rocim Reserva Red", price: 1,490, image: "images/rocim-reserva-red.png" },
+  { id: 12, name: "Herdade do Rocim Alicante Bouschet", price: 1,390, image: "images/alicante-bouschet.png" }
 ];
 
 let cart = [];
