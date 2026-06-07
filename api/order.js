@@ -121,14 +121,14 @@ Account Name: Solaris Intertrade Co., Ltd.
 Best regards,
 Solaris Wine
 Solaris Intertrade Co., Ltd.
-Email: order@solariswine.com
+Email: info@solariswine.com
 LINE: @solariswine
 WhatsApp: +66 96 164 4422
 `;
 
       await transporter.sendMail({
         from: `"Solaris Wine" <${process.env.EMAIL_USER}>`,
-        to: "order@solariswine.com",
+        to: "info@solariswine.com",
         subject: "New Solaris Wine Order",
         text: adminMessage,
         attachments
