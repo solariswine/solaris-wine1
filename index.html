@@ -1,289 +1,145 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solaris Wine</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
 <header class="header">
-
-  <div class="logo">
-    SOLARIS WINE
-  </div>
+  <div class="logo">SOLARIS WINE</div>
 
   <nav>
     <a href="#home">Home</a>
-    <a href="#collection">Our Collection</a>
-    <a href="#producer">Our Producer</a>
+    <a href="#collection">Collection</a>
+    <a href="#producer">Producer</a>
     <a href="#contact">Contact</a>
   </nav>
 
   <button class="cart-btn" onclick="openCart()">
     Cart (<span id="cartCount">0</span>)
   </button>
-
 </header>
 
 <section id="home" class="hero">
-
   <div class="hero-content">
-
-```
-<p class="eyebrow">
-  Premium Portuguese Wines
-</p>
-
-<h1>
-  Curated Wines From Portugal
-</h1>
-
-<p>
-  Imported by Solaris Intertrade Co., Ltd.
-</p>
-
-<a href="#collection" class="primary-btn">
-  Explore Collection
-</a>
-```
-
+    <p class="eyebrow">Premium Portuguese Wines</p>
+    <h1>Curated Wines From Portugal</h1>
+    <p>Imported by Solaris Intertrade Co., Ltd.</p>
+    <a href="#collection" class="primary-btn">Explore Collection</a>
   </div>
 
   <div class="hero-bottle">
-    <img src="images/mariana-red.png" alt="Mariana Red">
+    <img src="images/mariana-red.png" alt="Mariana Red" />
   </div>
-
 </section>
 
 <section id="collection" class="section">
-
-  <h2>
-    Our Collection
-  </h2>
-
+  <h2>Our Collection</h2>
   <div id="productGrid" class="grid"></div>
-
 </section>
 
 <section id="producer" class="section producer">
-
-  <h2>
-    Our Producer
-  </h2>
-
+  <h2>Our Producer</h2>
   <p>
     Herdade do Rocim is one of Portugal's respected wineries,
-    producing elegant wines that express the character of Alentejo
-    through modern winemaking and sustainable viticulture.
+    producing elegant wines that express the character of Alentejo,
+    Douro, Vinho Verde, and Lisboa through modern winemaking and regional identity.
   </p>
-
 </section>
 
 <section id="contact" class="section contact">
-
-  <h2>
-    Contact
-  </h2>
-
-  <p>
-    Email:
-    orders@solariswine.com
-  </p>
-
-  <p>
-    LINE:
-    @solariswine
-  </p>
-
-  <p>
-    WhatsApp:
-    +66 96 164 4422
-  </p>
-
+  <h2>Contact</h2>
+  <p>Email: order@solariswine.com</p>
+  <p>LINE: @solariswine</p>
+  <p>WhatsApp: +66 96 164 4422</p>
 </section>
 
 <div id="cartModal" class="modal">
-
   <div class="modal-box">
+    <button class="close" onclick="closeCart()">×</button>
 
-```
-<button class="close" onclick="closeCart()">
-  ×
-</button>
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <div id="cartTotal" class="total">Total: 0 THB</div>
 
-<h2>
-  Your Cart
-</h2>
+    <button class="primary-btn full" onclick="openCheckout()">
+      Checkout
+    </button>
 
-<div id="cartItems"></div>
-
-<div id="cartTotal" class="total">
-  Total: 0 THB
-</div>
-
-<button
-  class="primary-btn full"
-  onclick="openCheckout()">
-
-  Checkout
-
-</button>
-```
-
+    <button class="secondary-btn full" onclick="returnToCollection()">
+      Return to Collection
+    </button>
   </div>
-
 </div>
 
 <div id="checkoutModal" class="modal">
-
   <div class="modal-box checkout-box">
+    <button class="close" onclick="closeCheckout()">×</button>
 
-```
-<button class="close" onclick="closeCheckout()">
-  ×
-</button>
+    <h2>Confirm Payment</h2>
 
-<h2>
-  Confirm Payment
-</h2>
+    <div id="checkoutItems"></div>
+    <div id="checkoutTotal" class="total">Total: 0 THB</div>
 
-<div id="checkoutItems"></div>
+    <div class="qr-box">
+      <img src="images/payment-qr.png" alt="Payment QR" />
+    </div>
 
-<div id="checkoutTotal" class="total">
-  Total: 0 THB
-</div>
+    <div class="bank-info">
+      <strong>Solaris Intertrade Co., Ltd.</strong><br><br>
+      Kasikorn Bank<br>
+      Account No: 224-1-32112-9<br>
+      Account Name: Solaris Intertrade Co., Ltd.
+    </div>
 
-<div class="qr-box">
-  <img
-    src="images/payment-qr.png"
-    alt="Payment QR">
-</div>
+    <form id="orderForm">
+      <input name="name" placeholder="Full Name" required />
+      <input name="phone" placeholder="Phone Number" required />
+      <input type="email" name="email" placeholder="Email" required />
 
-<div class="bank-info">
+      <textarea name="address" placeholder="Delivery Address" required></textarea>
 
-  <strong>
-    Solaris Intertrade Co., Ltd.
-  </strong>
+      <input name="line" placeholder="LINE ID" />
+      <input name="whatsapp" placeholder="WhatsApp" />
+      <input name="facebook" placeholder="Facebook" />
+      <input name="instagram" placeholder="Instagram" />
 
-  <br><br>
+      <textarea name="note" placeholder="Additional Note"></textarea>
 
-  Bangkok Bank
+      <label class="upload-label">Upload Payment Slip</label>
+      <input type="file" name="slip" accept="image/*,.pdf" required />
 
-  <br>
+      <button type="submit" class="primary-btn full">
+        Submit Order
+      </button>
+    </form>
 
-  Account Name:
-  Solaris Intertrade Co., Ltd.
-
-  <br>
-
-  Reference:
-  KPS004KB000002291150
-
-</div>
-
-<form id="orderForm">
-
-  <input
-    name="name"
-    placeholder="Full Name"
-    required>
-
-  <input
-    name="phone"
-    placeholder="Phone Number"
-    required>
-
-  <input
-    type="email"
-    name="email"
-    placeholder="Email"
-    required>
-
-  <textarea
-    name="address"
-    placeholder="Delivery Address"
-    required></textarea>
-
-  <input
-    name="line"
-    placeholder="LINE ID">
-
-  <input
-    name="whatsapp"
-    placeholder="WhatsApp">
-
-  <input
-    name="facebook"
-    placeholder="Facebook">
-
-  <input
-    name="instagram"
-    placeholder="Instagram">
-
-  <textarea
-    name="note"
-    placeholder="Additional Note"></textarea>
-
-  <label class="upload-label">
-    Upload Payment Slip
-  </label>
-
-  <input
-    type="file"
-    name="slip"
-    required>
-
-  <button
-    type="submit"
-    class="primary-btn full">
-
-    Submit Order
-
-  </button>
-
-</form>
-
-<div id="orderStatus"></div>
-```
-
+    <div id="orderStatus"></div>
   </div>
-
 </div>
 
 <div id="successModal" class="modal">
-
   <div class="modal-box success-box">
+    <button class="close" onclick="closeSuccess()">×</button>
 
-```
-<h2>
-  Order Submitted Successfully
-</h2>
+    <h2>Order Submitted Successfully</h2>
 
-<p>
-  Thank you for your order.
-  We have received your order
-  and payment information.
-</p>
+    <p>
+      Thank you for your order. We have received your order and payment slip.
+      A confirmation email will be sent to you shortly.
+    </p>
 
-<button
-  class="primary-btn full"
-  onclick="goHome()">
+    <div id="successSummary"></div>
 
-  Back To Home
-
-</button>
-```
-
+    <button class="primary-btn full" onclick="goHome()">
+      Back to Main Menu
+    </button>
   </div>
-
 </div>
 
 <script src="app.js"></script>
-
 </body>
 </html>
