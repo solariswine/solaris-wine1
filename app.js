@@ -209,3 +209,39 @@ function openCheckout() {
 
   checkoutModal.classList.add("active");
 }
+function openCart() {
+  renderCart();
+  document.getElementById("cartModal").classList.add("active");
+}
+
+function closeCart() {
+  document.getElementById("cartModal").classList.remove("active");
+}
+
+/* ใส่ตรงนี้ */
+
+function openCheckout() {
+  if (cart.length === 0) {
+    alert("Your cart is empty");
+    return;
+  }
+
+  closeCart();
+
+  const checkoutModal = document.getElementById("checkoutModal");
+
+  if (!checkoutModal) {
+    alert("checkoutModal not found");
+    return;
+  }
+
+  checkoutModal.classList.add("active");
+}
+
+function closeCheckout() {
+  const checkoutModal = document.getElementById("checkoutModal");
+
+  if (checkoutModal) {
+    checkoutModal.classList.remove("active");
+  }
+}
