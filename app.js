@@ -197,13 +197,13 @@ function openCheckout() {
   }
 
   closeCart();
+
   renderCheckoutSummary();
-  goToDetailsStep();
 
   const checkoutModal = document.getElementById("checkoutModal");
 
   if (!checkoutModal) {
-    alert("checkoutModal not found in index.html");
+    alert("checkoutModal not found");
     return;
   }
 
