@@ -493,3 +493,14 @@ form button,
     grid-template-columns: 70px 1fr;
   }
 }
+.logo-wrap img {
+  height: 62px;
+  width: auto;
+  display: block;
+}
+
+@media (max-width: 560px) {
+  .logo-wrap img {
+    height: 48px;
+  }
+}
