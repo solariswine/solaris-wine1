@@ -33,11 +33,17 @@ function money(amount) {
   return "฿" + amount.toLocaleString();
 }
 
-function renderProducts() {
-  const grid = document.getElementById("productGrid");
-  if (!grid) return;
+.collection-slider {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
 
-  grid.innerHTML = "";
+.card {
+  min-width: 320px;
+}
 
   products.forEach(product => {
     const qty = selectedQty[product.id] || 1;
