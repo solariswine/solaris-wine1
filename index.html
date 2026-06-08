@@ -6,14 +6,15 @@
   <title>Solaris Wine</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
 <header class="header">
- <div class="logo-wrap">
-  <img src="images/solaris-logo.png" alt="Solaris Wine">
-</div>
+  <a href="#home" class="brand">
+    <img src="images/solaris-logo.png" alt="Solaris Wine" />
+  </a>
 
-  <nav>
+  <nav class="nav">
     <a href="#home">Home</a>
     <a href="#collection">Collection</a>
     <a href="#producer">Producer</a>
@@ -30,21 +31,37 @@
     <p class="eyebrow">Premium Portuguese Wines</p>
     <h1>Curated Wines From Portugal</h1>
     <p>Imported by Solaris Intertrade Co., Ltd.</p>
-    <a href="#collection" class="primary-btn">Explore Collection</a>
+
+    <a href="#collection" class="primary-btn">
+      Explore Collection
+    </a>
   </div>
 
-  <div class="hero-bottle">
+  <div class="hero-visual">
     <img src="images/mariana-red.png" alt="Mariana Red" />
   </div>
 </section>
 
 <section id="collection" class="section">
-  <h2>Our Collection</h2>
-  <div id="productGrid" class="grid"></div>
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Solaris Selection</p>
+      <h2>Our Collection</h2>
+    </div>
+
+    <div class="slider-actions">
+      <button onclick="slideCollection(-1)">←</button>
+      <button onclick="slideCollection(1)">→</button>
+    </div>
+  </div>
+
+  <div id="productGrid" class="collection-slider"></div>
 </section>
 
 <section id="producer" class="section producer">
-  <h2>Our Producer</h2>
+  <p class="eyebrow">Our Producer</p>
+  <h2>Herdade do Rocim</h2>
+
   <p>
     Herdade do Rocim is one of Portugal's respected wineries,
     producing elegant wines that express the character of Alentejo,
@@ -53,95 +70,218 @@
 </section>
 
 <section id="contact" class="section contact">
-  <h2>Contact</h2>
-  <p>Email: order@solariswine.com</p>
+  <p class="eyebrow">Contact</p>
+  <h2>Contact Solaris Wine</h2>
+
+  <p>Email: info@solariswine.com</p>
+  <p>Order: order@solariswine.com</p>
   <p>LINE: @solariswine</p>
   <p>WhatsApp: +66 96 164 4422</p>
 </section>
 
 <div id="cartModal" class="modal">
-  <div class="modal-box">
+  <div class="modal-box cart-panel">
     <button class="close" onclick="closeCart()">×</button>
 
-    <h2>Your Cart</h2>
-    <div id="cartItems"></div>
-    <div id="cartTotal" class="total">Total: 0 THB</div>
+    <div class="modal-head">
+      <h2>Your Cart</h2>
+      <span><span id="cartItemLabel">0</span> items</span>
+    </div>
 
-    <button class="primary-btn full" onclick="openCheckout()">
-      Checkout
-    </button>
+    <div id="cartItems" class="cart-list"></div>
 
-    <button class="secondary-btn full" onclick="returnToCollection()">
-      Return to Collection
-    </button>
+    <div class="cart-footer">
+      <div class="cart-row">
+        <span>Subtotal</span>
+        <strong id="cartTotal">฿0</strong>
+      </div>
+
+      <div class="cart-row total-row">
+        <span>Total</span>
+        <strong id="cartGrandTotal">฿0</strong>
+      </div>
+
+      <button class="primary-btn full" onclick="openCheckout()">
+        Proceed to Checkout →
+      </button>
+
+      <button class="secondary-btn full" onclick="returnToCollection()">
+        Return to Collection
+      </button>
+
+      <button class="ghost-btn full" onclick="clearCart()">
+        Clear Cart
+      </button>
+    </div>
   </div>
 </div>
 
 <div id="checkoutModal" class="modal">
-  <div class="modal-box checkout-box">
+  <div class="modal-box checkout-panel">
     <button class="close" onclick="closeCheckout()">×</button>
 
-    <h2>Confirm Payment</h2>
+    <h2>Checkout</h2>
 
-    <div id="checkoutItems"></div>
-    <div id="checkoutTotal" class="total">Total: 0 THB</div>
+    <div class="checkout-steps">
+      <div id="stepDot1" class="step active">
+        <span>1</span>
+        <small>Details</small>
+      </div>
 
-    <div class="qr-box">
-      <img src="images/payment-qr.png" alt="Payment QR" />
-    </div>
+      <div id="stepDot2" class="step">
+        <span>2</span>
+        <small>Payment</small>
+      </div>
 
-    <div class="bank-info">
-      <strong>Solaris Intertrade Co., Ltd.</strong><br><br>
-      Kasikorn Bank<br>
-      Account No: 224-1-32112-9<br>
-      Account Name: Solaris Intertrade Co., Ltd.
+      <div id="stepDot3" class="step">
+        <span>✓</span>
+        <small>Done</small>
+      </div>
     </div>
 
     <form id="orderForm">
-      <input name="name" placeholder="Full Name" required />
-      <input name="phone" placeholder="Phone Number" required />
-      <input type="email" name="email" placeholder="Email" required />
 
-      <textarea name="address" placeholder="Delivery Address" required></textarea>
+      <div id="checkoutStepDetails" class="checkout-step active">
+        <h3>Your Details</h3>
 
-      <input name="line" placeholder="LINE ID" />
-      <input name="whatsapp" placeholder="WhatsApp" />
-      <input name="facebook" placeholder="Facebook" />
-      <input name="instagram" placeholder="Instagram" />
+        <label>Full Name *</label>
+        <input name="name" placeholder="e.g. Khun Somchai" required />
 
-      <textarea name="note" placeholder="Additional Note"></textarea>
+        <div class="form-grid">
+          <div>
+            <label>Phone *</label>
+            <input name="phone" placeholder="08X-XXX-XXXX" required />
+          </div>
 
-      <label class="upload-label">Upload Payment Slip</label>
-      <input type="file" name="slip" accept="image/*,.pdf" required />
+          <div>
+            <label>Email *</label>
+            <input type="email" name="email" placeholder="you@email.com" required />
+          </div>
+        </div>
 
-      <button type="submit" class="primary-btn full">
-        Submit Order
-      </button>
+        <label>Delivery Address *</label>
+        <textarea name="address" placeholder="Street, District, Province, Postcode" required></textarea>
+
+        <div class="form-grid">
+          <div>
+            <label>LINE ID</label>
+            <input name="line" placeholder="@lineid" />
+          </div>
+
+          <div>
+            <label>WhatsApp / Facebook / Instagram</label>
+            <input name="social" placeholder="Optional contact" />
+          </div>
+        </div>
+
+        <label>Notes</label>
+        <textarea name="note" placeholder="Optional"></textarea>
+
+        <div class="checkout-summary">
+          <h3>Order Summary</h3>
+          <div id="checkoutItemsDetails"></div>
+          <div class="summary-total">
+            <span>Total</span>
+            <strong id="checkoutTotalDetails">฿0</strong>
+          </div>
+        </div>
+
+        <button type="button" class="primary-btn full" onclick="goToPaymentStep()">
+          Continue to Payment →
+        </button>
+      </div>
+
+      <div id="checkoutStepPayment" class="checkout-step">
+        <h3>Scan to Pay — PromptPay / K-Shop</h3>
+
+        <div class="payment-total">
+          <strong id="checkoutTotalPayment">฿0</strong>
+          <span>Solaris Intertrade Co., Ltd.</span>
+        </div>
+
+        <div class="qr-box">
+          <img src="images/payment-qr.png" alt="Payment QR" />
+        </div>
+
+        <div class="bank-info">
+          <strong>บจก. โซลาริส อินเตอร์เทรด</strong><br />
+          Kasikorn Bank<br />
+          Account No: 224-1-32112-9<br />
+          Account Name: Solaris Intertrade Co., Ltd.
+        </div>
+
+        <div class="payment-tags">
+          <span>✓ PromptPay</span>
+          <span>✓ K-Shop</span>
+          <span>✓ VISA</span>
+          <span>✓ Mastercard</span>
+        </div>
+
+        <label class="upload-title">Upload Payment Slip *</label>
+
+        <label class="upload-box">
+          <input type="file" name="slip" accept="image/*,.pdf" required />
+          <span>Tap to upload slip / แนบสลิป</span>
+        </label>
+
+        <div class="checkout-summary">
+          <h3>Order Summary</h3>
+          <div id="checkoutItemsPayment"></div>
+          <div class="summary-total">
+            <span>Total</span>
+            <strong id="checkoutTotalFinal">฿0</strong>
+          </div>
+        </div>
+
+        <div class="checkout-buttons">
+          <button type="button" class="secondary-btn" onclick="goToDetailsStep()">
+            ← Back
+          </button>
+
+          <button type="submit" class="primary-btn">
+            Confirm & Send Order →
+          </button>
+        </div>
+
+        <div id="orderStatus"></div>
+      </div>
+
     </form>
-
-    <div id="orderStatus"></div>
   </div>
 </div>
 
 <div id="successModal" class="modal">
-  <div class="modal-box success-box">
+  <div class="modal-box success-panel">
     <button class="close" onclick="closeSuccess()">×</button>
 
-    <h2>Order Submitted Successfully</h2>
+    <h2>Order Confirmed!</h2>
 
     <p>
-      Thank you for your order. We have received your order and payment slip.
-      A confirmation email will be sent to you shortly.
+      Your order and payment slip have been sent to our team.
+      We will verify and confirm within 1–2 hours.
     </p>
 
-    <div id="successSummary"></div>
+    <div class="order-ref-box">
+      <span>Order Reference</span>
+      <strong id="successOrderRef">SW-000000</strong>
+    </div>
+
+    <div id="successSummary" class="success-summary"></div>
+
+    <div class="next-box">
+      <h4>What happens next</h4>
+      <p>1. Slip verified by team within 1–2 hours</p>
+      <p>2. Confirmation sent via Email / LINE</p>
+      <p>3. Delivery within 1–3 business days</p>
+    </div>
 
     <button class="primary-btn full" onclick="goHome()">
-      Back to Main Menu
+      Done — Back to Main Menu
     </button>
   </div>
 </div>
 
 <script src="app.js"></script>
+
 </body>
 </html>
