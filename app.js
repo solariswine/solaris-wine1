@@ -1,21 +1,22 @@
 const products = [
-  { id: 1, name: "Mariana Red", price: 1090, image: "images/mariana-red.png" },
-  { id: 2, name: "Mariana White", price: 990, image: "images/mariana-white.png" },
-  { id: 3, name: "Mariana Rosé", price: 990, image: "images/mariana-rose.png" },
-  { id: 4, name: "Goivo Vinho Verde", price: 890, image: "images/goivo.png" },
-  
-  { id: 5, name: "Vale da Mata Red", price: 1190, image: "images/vale-da-mata-red.png" },
-  { id: 6, name: "Vale da Mata White", price: 1050, image: "images/vale-da-mata-white.png" },
-  { id: 7, name: "Raio de Luz Red", price: 1190, image: "images/raio-de-luz-red.png" },
-  { id: 8, name: "Raio de Luz White", price: 1050, image: "images/raio-de-luz-white.png" },
-  { id: 9, name: "Herdade do Rocim Red", price: 1290, image: "images/rocim-red.png" },
-  { id: 10, name: "Herdade do Rocim White", price: 1150, image: "images/rocim-white.png" },
-  { id: 11, name: "Herdade do Rocim Reserva Red", price: 1490, image: "images/rocim-reserva-red.png" },
-  { id: 12, name: "Herdade do Rocim Alicante Bouschet", price: 1390, image: "images/alicante-bouschet.png" }
+  { id: 1, name: "Mariana Red 2024", price: 1090, image: "images/mariana-red.png" },
+  { id: 2, name: "Mariana White 2024", price: 990, image: "images/mariana-white.png" },
+  { id: 3, name: "Mariana Rosé 2024", price: 990, image: "images/mariana-rose.png" },
+  { id: 4, name: "Goivo Vinho Verde 2024", price: 890, image: "images/goivo.png" },
+
+  { id: 5, name: "Vale da Mata Red 2024", price: 1190, image: "images/vale-da-mata-red.png" },
+  { id: 6, name: "Vale da Mata White 2024", price: 1050, image: "images/vale-da-mata-white.png" },
+  { id: 7, name: "Raio de Luz Red 2024", price: 1190, image: "images/raio-de-luz-red.png" },
+  { id: 8, name: "Raio de Luz White 2024", price: 1050, image: "images/raio-de-luz-white.png" },
+  { id: 9, name: "Herdade do Rocim Red 2024", price: 1290, image: "images/rocim-red.png" },
+  { id: 10, name: "Herdade do Rocim White 2024", price: 1150, image: "images/rocim-white.png" },
+  { id: 11, name: "Herdade do Rocim Reserva Red 2023", price: 1490, image: "images/rocim-reserva-red.png" },
+  { id: 12, name: "Herdade do Rocim Alicante Bouschet 2023", price: 1390, image: "images/alicante-bouschet.png" }
 ];
 
 let cart = [];
 let selectedQty = {};
+let currentOrderRef = "";
 
 document.addEventListener("DOMContentLoaded", () => {
   renderProducts();
@@ -23,75 +24,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("orderForm");
 
-  if (!form) return;
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const status = document.getElementById("orderStatus");
-
-    status.textContent = "Submitting order...";
-
-    const successSummary = document.getElementById("successSummary");
-    successSummary.innerHTML = generateOrderSummaryHTML();
-
-    const formData = new FormData(form);
-    formData.append("order", JSON.stringify(cart));
-
-    try {
-      const response = await fetch("/api/order", {
-        method: "POST",
-        body: formData
-      });
-
-      if (response.ok) {
-        form.reset();
-        closeCheckout();
-
-        document.getElementById("successModal").classList.add("active");
-
-        cart = [];
-        renderCart();
-        status.textContent = "";
-      } else {
-        status.textContent = "Order submission failed.";
-      }
-    } catch (error) {
-      status.textContent = "Connection error.";
-    }
-  });
+  if (form) {
+    form.addEventListener("submit", submitOrder);
+  }
 });
+
+function money(amount) {
+  return "฿" + amount.toLocaleString();
+}
 
 function renderProducts() {
   const grid = document.getElementById("productGrid");
-
   if (!grid) return;
 
-  grid.className = "collection-wrap";
-
-  grid.innerHTML = `
-    <button class="slider-btn left" onclick="slideCollection(-1)">‹</button>
-    <div id="wineSlider" class="slider"></div>
-    <button class="slider-btn right" onclick="slideCollection(1)">›</button>
-  `;
-
-  const slider = document.getElementById("wineSlider");
+  grid.innerHTML = "";
 
   products.forEach(product => {
     const qty = selectedQty[product.id] || 1;
-    const priceText = product.price > 0
-      ? `${product.price.toLocaleString()} THB`
-      : "Price TBC";
 
-    slider.innerHTML += `
+    grid.innerHTML += `
       <div class="card">
         <img src="${product.image}" alt="${product.name}">
-
         <h3>${product.name}</h3>
-
-        <p>Portugal · 2024</p>
-
-        <div class="price">${priceText}</div>
+        <p>Portugal</p>
+        <div class="price">${money(product.price)}</div>
 
         <div class="product-qty">
           <button onclick="decreaseProductQty(${product.id})">−</button>
@@ -99,7 +55,7 @@ function renderProducts() {
           <button onclick="increaseProductQty(${product.id})">+</button>
         </div>
 
-        <button class="primary-btn" onclick="addToCart(${product.id})">
+        <button class="primary-btn full" onclick="addToCart(${product.id})">
           Add ${qty} To Cart
         </button>
       </div>
@@ -108,12 +64,11 @@ function renderProducts() {
 }
 
 function slideCollection(direction) {
-  const slider = document.getElementById("wineSlider");
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
 
-  if (!slider) return;
-
-  slider.scrollBy({
-    left: direction * 330,
+  grid.scrollBy({
+    left: direction * 350,
     behavior: "smooth"
   });
 }
@@ -148,35 +103,22 @@ function addToCart(id) {
 
 function renderCart() {
   const cartItems = document.getElementById("cartItems");
-  const checkoutItems = document.getElementById("checkoutItems");
   const cartTotal = document.getElementById("cartTotal");
-  const checkoutTotal = document.getElementById("checkoutTotal");
+  const cartGrandTotal = document.getElementById("cartGrandTotal");
   const cartCount = document.getElementById("cartCount");
+  const cartItemLabel = document.getElementById("cartItemLabel");
 
   if (!cartItems) return;
 
   cartItems.innerHTML = "";
-
-  if (checkoutItems) {
-    checkoutItems.innerHTML = "";
-  }
 
   let total = 0;
   let count = 0;
 
   cart.forEach(item => {
     const subtotal = item.price * item.qty;
-
     total += subtotal;
     count += item.qty;
-
-    const priceText = item.price > 0
-      ? `${item.price.toLocaleString()} THB`
-      : "Price TBC";
-
-    const subtotalText = item.price > 0
-      ? `${subtotal.toLocaleString()} THB`
-      : "Price TBC";
 
     cartItems.innerHTML += `
       <div class="cart-item">
@@ -184,7 +126,7 @@ function renderCart() {
 
         <div>
           <strong>${item.name}</strong>
-          <p>${priceText}</p>
+          <p>2024 · ${money(item.price)}/btl</p>
 
           <div class="qty">
             <button onclick="decrease(${item.id})">−</button>
@@ -197,82 +139,70 @@ function renderCart() {
           </button>
         </div>
 
-        <strong>${subtotalText}</strong>
+        <strong>${money(subtotal)}</strong>
       </div>
     `;
-
-    if (checkoutItems) {
-      checkoutItems.innerHTML += `
-        <div class="summary-item">
-          <img src="${item.image}" alt="${item.name}">
-
-          <div>
-            <strong>${item.name}</strong><br>
-            Qty: ${item.qty}
-          </div>
-
-          <strong>${subtotalText}</strong>
-        </div>
-      `;
-    }
   });
 
-  if (cartTotal) {
-    cartTotal.textContent = `Total: ${total.toLocaleString()} THB`;
-  }
+  if (cartTotal) cartTotal.textContent = money(total);
+  if (cartGrandTotal) cartGrandTotal.textContent = money(total);
+  if (cartCount) cartCount.textContent = count;
+  if (cartItemLabel) cartItemLabel.textContent = count;
 
-  if (checkoutTotal) {
-    checkoutTotal.textContent = `Total: ${total.toLocaleString()} THB`;
-  }
-
-  if (cartCount) {
-    cartCount.textContent = count;
-  }
+  renderCheckoutSummary();
 }
 
-function generateOrderSummaryHTML() {
-  let total = 0;
+function renderCheckoutSummary() {
+  const detailsBox = document.getElementById("checkoutItemsDetails");
+  const paymentBox = document.getElementById("checkoutItemsPayment");
 
-  let html = "<h3>Order Summary</h3>";
+  const totalDetails = document.getElementById("checkoutTotalDetails");
+  const totalPayment = document.getElementById("checkoutTotalPayment");
+  const totalFinal = document.getElementById("checkoutTotalFinal");
 
-  cart.forEach(item => {
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+  const html = cart.map(item => {
     const subtotal = item.price * item.qty;
 
-    total += subtotal;
+    return `
+      <div class="summary-item">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <img src="${item.image}" alt="${item.name}">
+          <div>
+            <strong>${item.name}</strong><br>
+            <small>${item.qty} btl</small>
+          </div>
+        </div>
 
-    html += `
-      <p>
-        <strong>${item.name}</strong><br>
-        Qty: ${item.qty}<br>
-        ${item.price > 0 ? `${subtotal.toLocaleString()} THB` : "Price TBC"}
-      </p>
+        <strong>${money(subtotal)}</strong>
+      </div>
     `;
-  });
+  }).join("");
 
-  html += `<h3>Total: ${total.toLocaleString()} THB</h3>`;
+  if (detailsBox) detailsBox.innerHTML = html;
+  if (paymentBox) paymentBox.innerHTML = html;
 
-  return html;
+  if (totalDetails) totalDetails.textContent = money(total);
+  if (totalPayment) totalPayment.textContent = money(total);
+  if (totalFinal) totalFinal.textContent = money(total);
 }
 
 function increase(id) {
   const item = cart.find(i => i.id === id);
-
-  if (item) {
-    item.qty++;
-  }
-
+  if (item) item.qty++;
   renderCart();
 }
 
 function decrease(id) {
   const item = cart.find(i => i.id === id);
-
   if (!item) return;
 
   if (item.qty > 1) {
     item.qty--;
   } else {
     removeItem(id);
+    return;
   }
 
   renderCart();
@@ -280,6 +210,11 @@ function decrease(id) {
 
 function removeItem(id) {
   cart = cart.filter(item => item.id !== id);
+  renderCart();
+}
+
+function clearCart() {
+  cart = [];
   renderCart();
 }
 
@@ -303,14 +238,133 @@ function openCheckout() {
     return;
   }
 
-  renderCart();
   closeCart();
-
+  renderCheckoutSummary();
+  goToDetailsStep();
   document.getElementById("checkoutModal").classList.add("active");
 }
 
 function closeCheckout() {
   document.getElementById("checkoutModal").classList.remove("active");
+}
+
+function goToDetailsStep() {
+  document.getElementById("checkoutStepDetails").classList.add("active");
+  document.getElementById("checkoutStepPayment").classList.remove("active");
+
+  document.getElementById("stepDot1").classList.add("active");
+  document.getElementById("stepDot2").classList.remove("active");
+  document.getElementById("stepDot3").classList.remove("active");
+}
+
+function goToPaymentStep() {
+  const form = document.getElementById("orderForm");
+
+  const name = form.elements["name"].value.trim();
+  const phone = form.elements["phone"].value.trim();
+  const email = form.elements["email"].value.trim();
+  const address = form.elements["address"].value.trim();
+
+  if (!name || !phone || !email || !address) {
+    alert("Please complete name, phone, email and delivery address.");
+    return;
+  }
+
+  document.getElementById("checkoutStepDetails").classList.remove("active");
+  document.getElementById("checkoutStepPayment").classList.add("active");
+
+  document.getElementById("stepDot1").classList.add("active");
+  document.getElementById("stepDot2").classList.add("active");
+  document.getElementById("stepDot3").classList.remove("active");
+
+  renderCheckoutSummary();
+}
+
+function generateOrderReference() {
+  return "SW-" + Math.floor(100000 + Math.random() * 900000);
+}
+
+function generateSuccessSummaryHTML() {
+  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+  const list = cart.map(item => {
+    const subtotal = item.price * item.qty;
+
+    return `
+      <div class="summary-item">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <img src="${item.image}" alt="${item.name}">
+          <div>
+            <strong>${item.name}</strong><br>
+            <small>${item.qty} btl</small>
+          </div>
+        </div>
+
+        <strong>${money(subtotal)}</strong>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <h3>Order Summary</h3>
+    ${list}
+    <div class="summary-total">
+      <span>Total</span>
+      <strong>${money(total)}</strong>
+    </div>
+  `;
+}
+
+async function submitOrder(e) {
+  e.preventDefault();
+
+  if (cart.length === 0) {
+    alert("Your cart is empty");
+    return;
+  }
+
+  const status = document.getElementById("orderStatus");
+  status.textContent = "Submitting order...";
+
+  const form = document.getElementById("orderForm");
+  const formData = new FormData(form);
+
+  currentOrderRef = generateOrderReference();
+
+  formData.append("order", JSON.stringify(cart));
+  formData.append("orderRef", currentOrderRef);
+
+  try {
+    const response = await fetch("/api/order", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!response.ok) {
+      status.textContent = "Order submission failed.";
+      return;
+    }
+
+    document.getElementById("successOrderRef").textContent = currentOrderRef;
+    document.getElementById("successSummary").innerHTML = generateSuccessSummaryHTML();
+
+    closeCheckout();
+
+    document.getElementById("successModal").classList.add("active");
+
+    document.getElementById("stepDot3").classList.add("active");
+
+    cart = [];
+    selectedQty = {};
+    form.reset();
+    renderProducts();
+    renderCart();
+    status.textContent = "";
+
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Connection error.";
+  }
 }
 
 function closeSuccess() {
@@ -319,11 +373,6 @@ function closeSuccess() {
 
 function goHome() {
   closeSuccess();
-
   window.location.href = "#home";
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
