@@ -190,3 +190,22 @@ function slideCollection(direction) {
     behavior: "smooth"
   });
 }
+function openCheckout() {
+  if (cart.length === 0) {
+    alert("Your cart is empty");
+    return;
+  }
+
+  closeCart();
+  renderCheckoutSummary();
+  goToDetailsStep();
+
+  const checkoutModal = document.getElementById("checkoutModal");
+
+  if (!checkoutModal) {
+    alert("checkoutModal not found in index.html");
+    return;
+  }
+
+  checkoutModal.classList.add("active");
+}
