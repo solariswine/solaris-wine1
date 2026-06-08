@@ -19,10 +19,21 @@ let cart = [];
 document.addEventListener("DOMContentLoaded", () => {
   renderProducts();
   renderCart();
+
+  const form = document.getElementById("orderForm");
+  if (form) form.addEventListener("submit", submitOrder);
 });
 
 function money(amount) {
   return "฿" + amount.toLocaleString();
+}
+
+function getCartTotal() {
+  return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+}
+
+function getCartCount() {
+  return cart.reduce((sum, item) => sum + item.qty, 0);
 }
 
 function renderProducts() {
@@ -95,17 +106,12 @@ function renderCart() {
 
   cartItems.innerHTML = "";
 
-  let total = 0;
-  let count = 0;
-
   if (cart.length === 0) {
     cartItems.innerHTML = `<p style="color:#9e8e6b;">Your cart is empty.</p>`;
   }
 
   cart.forEach(item => {
     const subtotal = item.price * item.qty;
-    total += subtotal;
-    count += item.qty;
 
     cartItems.innerHTML += `
       <div class="cart-item">
@@ -131,10 +137,56 @@ function renderCart() {
     `;
   });
 
+  const total = getCartTotal();
+  const count = getCartCount();
+
   if (cartTotal) cartTotal.textContent = money(total);
   if (cartGrandTotal) cartGrandTotal.textContent = money(total);
   if (cartCount) cartCount.textContent = count;
   if (cartItemLabel) cartItemLabel.textContent = count;
+
+  renderCheckoutSummary();
+}
+
+function renderCheckoutSummary() {
+  const total = getCartTotal();
+  const totalText = money(total);
+
+  const ids = [
+    "checkoutTotalDetails",
+    "checkoutTotalPayment",
+    "checkoutTotalFinal",
+    "cartTotal",
+    "cartGrandTotal"
+  ];
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = totalText;
+  });
+
+  const html = cart.map(item => {
+    const subtotal = item.price * item.qty;
+
+    return `
+      <div class="summary-item">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <img src="${item.image}" alt="${item.name}">
+          <div>
+            <strong>${item.name}</strong><br>
+            <small>${item.qty} bottle(s)</small>
+          </div>
+        </div>
+        <strong>${money(subtotal)}</strong>
+      </div>
+    `;
+  }).join("");
+
+  const detailsBox = document.getElementById("checkoutItemsDetails");
+  const paymentBox = document.getElementById("checkoutItemsPayment");
+
+  if (detailsBox) detailsBox.innerHTML = html;
+  if (paymentBox) paymentBox.innerHTML = html;
 }
 
 function increaseCartQty(id) {
@@ -181,15 +233,6 @@ function returnToCollection() {
   window.location.href = "#collection";
 }
 
-function slideCollection(direction) {
-  const slider = document.getElementById("productGrid");
-  if (!slider) return;
-
-  slider.scrollBy({
-    left: direction * 350,
-    behavior: "smooth"
-  });
-}
 function openCheckout() {
   if (cart.length === 0) {
     alert("Your cart is empty");
@@ -197,36 +240,8 @@ function openCheckout() {
   }
 
   closeCart();
-
   renderCheckoutSummary();
-
-  const checkoutModal = document.getElementById("checkoutModal");
-
-  if (!checkoutModal) {
-    alert("checkoutModal not found");
-    return;
-  }
-
-  checkoutModal.classList.add("active");
-}
-function openCart() {
-  renderCart();
-  document.getElementById("cartModal").classList.add("active");
-}
-
-function closeCart() {
-  document.getElementById("cartModal").classList.remove("active");
-}
-
-/* ใส่ตรงนี้ */
-
-function openCheckout() {
-  if (cart.length === 0) {
-    alert("Your cart is empty");
-    return;
-  }
-
-  closeCart();
+  goToDetailsStep();
 
   const checkoutModal = document.getElementById("checkoutModal");
 
@@ -240,8 +255,159 @@ function openCheckout() {
 
 function closeCheckout() {
   const checkoutModal = document.getElementById("checkoutModal");
+  if (checkoutModal) checkoutModal.classList.remove("active");
+}
 
-  if (checkoutModal) {
-    checkoutModal.classList.remove("active");
+function goToDetailsStep() {
+  const stepDetails = document.getElementById("checkoutStepDetails");
+  const stepPayment = document.getElementById("checkoutStepPayment");
+
+  if (stepDetails) stepDetails.classList.add("active");
+  if (stepPayment) stepPayment.classList.remove("active");
+
+  const dot1 = document.getElementById("stepDot1");
+  const dot2 = document.getElementById("stepDot2");
+  const dot3 = document.getElementById("stepDot3");
+
+  if (dot1) dot1.classList.add("active");
+  if (dot2) dot2.classList.remove("active");
+  if (dot3) dot3.classList.remove("active");
+
+  renderCheckoutSummary();
+}
+
+function goToPaymentStep() {
+  const form = document.getElementById("orderForm");
+
+  const name = form.elements["name"].value.trim();
+  const phone = form.elements["phone"].value.trim();
+  const email = form.elements["email"].value.trim();
+  const address = form.elements["address"].value.trim();
+
+  if (!name || !phone || !email || !address) {
+    alert("Please complete name, phone, email and delivery address.");
+    return;
   }
+
+  document.getElementById("checkoutStepDetails").classList.remove("active");
+  document.getElementById("checkoutStepPayment").classList.add("active");
+
+  document.getElementById("stepDot1").classList.add("active");
+  document.getElementById("stepDot2").classList.add("active");
+  document.getElementById("stepDot3").classList.remove("active");
+
+  renderCheckoutSummary();
+}
+
+function generateOrderReference() {
+  const now = new Date();
+
+  const date =
+    now.getFullYear().toString() +
+    String(now.getMonth() + 1).padStart(2, "0") +
+    String(now.getDate()).padStart(2, "0");
+
+  const random = Math.floor(1000 + Math.random() * 9000);
+
+  return `SW-${date}-${random}`;
+}
+
+function generateSuccessSummaryHTML() {
+  const total = getCartTotal();
+
+  const list = cart.map(item => {
+    const subtotal = item.price * item.qty;
+
+    return `
+      <div class="summary-item">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <img src="${item.image}" alt="${item.name}">
+          <div>
+            <strong>${item.name}</strong><br>
+            <small>${item.qty} bottle(s)</small>
+          </div>
+        </div>
+        <strong>${money(subtotal)}</strong>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <h3>Order Summary</h3>
+    ${list}
+    <div class="summary-total">
+      <span>Total</span>
+      <strong>${money(total)}</strong>
+    </div>
+  `;
+}
+
+async function submitOrder(e) {
+  e.preventDefault();
+
+  if (cart.length === 0) {
+    alert("Your cart is empty");
+    return;
+  }
+
+  const status = document.getElementById("orderStatus");
+  status.textContent = "Submitting order...";
+
+  const form = document.getElementById("orderForm");
+  const formData = new FormData(form);
+
+  const orderRef = generateOrderReference();
+
+  document.getElementById("successOrderRef").textContent = orderRef;
+  document.getElementById("successSummary").innerHTML = generateSuccessSummaryHTML();
+
+  formData.append("order", JSON.stringify(cart));
+  formData.append("orderRef", orderRef);
+
+  try {
+    const response = await fetch("/api/order", {
+      method: "POST",
+      body: formData
+    });
+
+    if (!response.ok) {
+      status.textContent = "Order submission failed.";
+      return;
+    }
+
+    closeCheckout();
+    document.getElementById("successModal").classList.add("active");
+
+    cart = [];
+    selectedQty = {};
+    form.reset();
+    renderProducts();
+    renderCart();
+    status.textContent = "";
+
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Connection error.";
+  }
+}
+
+function closeSuccess() {
+  const successModal = document.getElementById("successModal");
+  if (successModal) successModal.classList.remove("active");
+}
+
+function goHome() {
+  closeSuccess();
+  window.location.href = "#home";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function slideCollection(direction) {
+  const slider = document.getElementById("productGrid");
+  if (!slider) return;
+
+  slider.scrollBy({
+    left: direction * 350,
+    behavior: "smooth"
+  });
 }
