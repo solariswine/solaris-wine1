@@ -63,11 +63,11 @@ function renderProducts() {
   });
 }
 
-function slideCollection(direction) {
-  const grid = document.getElementById("productGrid");
-  if (!grid) return;
+ffunction slideCollection(direction) {
+  const slider = document.getElementById("productGrid");
+  if (!slider) return;
 
-  grid.scrollBy({
+  slider.scrollBy({
     left: direction * 350,
     behavior: "smooth"
   });
